@@ -37,7 +37,9 @@ class UserController extends Controller
         $activeAdCount   = Ptc::where('status', 1)->where('user_id', auth()->id())->count();
         $user            = auth()->user();
 
-        return view($this->activeTemplate . 'user.dashboard', compact('pageTitle', 'chart', 'user', 'commissionCount', 'activeAdCount'));
+        $referCount = User::whereRef_by(auth()->user()->id)->count();
+
+        return view($this->activeTemplate . 'user.dashboard', compact('pageTitle', 'chart', 'user', 'commissionCount', 'activeAdCount', 'referCount'));
     }
 
     public function depositHistory(Request $request)
