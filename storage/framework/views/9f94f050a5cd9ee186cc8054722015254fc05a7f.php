@@ -13,7 +13,7 @@
                 </h5>
                 <div class="card-body">
                     <?php if($leftRefer > 0): ?>
-                        <p class="bg-warning" style="color: red"><strong><?php echo e("You Must need to Refer ".$leftRefer." Person for withdraw"); ?></strong></p>
+                        <p class="bg-warning" style="color: red"><strong><?php echo e($message); ?></strong></p>
                     <?php endif; ?>
                 <div class="row g-3">
                     <div class="col-12">

@@ -21,14 +21,20 @@ class WithdrawController extends Controller
     {
         $withdrawMethod = WithdrawMethod::where('status',Status::ENABLE)->get();
         $pageTitle = 'Withdraw Money';
+        $leftRefer = 0;
         $referCount = User::whereRef_by(auth()->user()->id)->count();
         $limit = ReferralSet::where('user_id', auth()->user()->id)
             ->whereDate('year_month', '>', Carbon::now())
             ->first();
-        $leftRefer =  $limit->limit-$referCount;
-//        dd($leftRefer);
-//        dd($referCount);
-        return view($this->activeTemplate.'user.withdraw.methods', compact('pageTitle','withdrawMethod', 'leftRefer'));
+        if (!$limit) {
+            // No record found, so pass a message
+            $message = "Limit Not set yet";
+        } else {
+            // Record found
+            $message =  "You Must need to Refer ".$limit->limit-$referCount." Person for withdraw";
+            $leftRefer = $limit->limit - $referCount;
+        }
+        return view($this->activeTemplate.'user.withdraw.methods', compact('pageTitle','withdrawMethod', 'leftRefer', 'message'));
     }
 
     public function withdrawStore(Request $request)
