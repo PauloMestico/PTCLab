@@ -265,6 +265,53 @@
             </div>
         </div>
 
+
+        <div class="col-sm-12 col-md-6 col-xl-4">
+            <div class="widget-container">
+                <div class="widget-container__head">
+                    <div class="container text-center">
+                        <div class="row" style="width: 100%">
+                            <div class="col-5">
+                                <span class="dashboard-widget__title">
+                                    My Team
+                                </span>
+                            </div>
+                            <div class="col-7">
+                                <span class="dashboard-widget__title" style="padding: 0 !important;">
+                                    Active Member
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-widget__content" style="height: 85px; padding-top: 10px">
+                    <div class="dashboard-widget">
+                        <div class="container text-center">
+                            <span class="dashboard-widget__title">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <h4 class="dashboard-widget__amount">
+                                            <?php echo e(__($referCount)); ?>
+
+                                        </h4>
+                                    </div>
+                                    <div class="col-7">
+                                    <h4 class="dashboard-widget__amount">
+                                            <?php echo e(__($planMember)); ?>
+
+                                    </h4>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <span class="dashboard-widget__overlay-icon">
+                    <i class="fas fa-clock"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
         <div class="col-md-12 mb-30">
             <div class="card border-0">
                 <div class="card-body">

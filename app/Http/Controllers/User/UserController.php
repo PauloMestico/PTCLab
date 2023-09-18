@@ -36,10 +36,10 @@ class UserController extends Controller
         $commissionCount = CommissionLog::where('to_id', auth()->id())->sum('amount');
         $activeAdCount   = Ptc::where('status', 1)->where('user_id', auth()->id())->count();
         $user            = auth()->user();
-
         $referCount = User::whereRef_by(auth()->user()->id)->count();
+        $planMember = User::where('ref_by', auth()->user()->id)->where('plan_id', '>', 0)->count();
 
-        return view($this->activeTemplate . 'user.dashboard', compact('pageTitle', 'chart', 'user', 'commissionCount', 'activeAdCount', 'referCount'));
+        return view($this->activeTemplate . 'user.dashboard', compact('pageTitle', 'chart', 'user', 'commissionCount', 'activeAdCount', 'referCount', 'planMember'));
     }
 
     public function depositHistory(Request $request)
