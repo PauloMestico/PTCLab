@@ -101,9 +101,25 @@
             $('.planBtn').on('click', function () {
                 var modal = $('#planModal');
                 // console.log($(this).data('id'));
+                var userId = $(this).data('id');
                 $('#modalUserId').val($(this).data('id'));
                 if ($(this).data('id') == 0) {
                     modal.find('form')[0].reset();
+                }else {
+                    $.ajax({
+                        url: '{{ route('get.user.data') }}', // Replace with the actual URL to fetch user data
+                        method: 'GET',
+                        data: { userId: userId },
+                        success: function (data) {
+                            console.log(data);
+                            // Populate the input fields with data from the server response
+                            modal.find('input[name="limit"]').val(data.limit);
+                            modal.find('input[name="year_month"]').val(data.year_month);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
                 }
                 modal.modal('show');
             });

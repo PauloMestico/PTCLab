@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('panel'); ?>
     <div class="row">
         <div class="col-lg-12">
@@ -17,31 +19,21 @@
                             <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td>
-                                        <?php echo e($user->firstname." ".$user->lastname); ?>
+                                        <?php echo e($user->user->firstname." ".$user->user->lastname); ?>
 
                                     </td>
 
                                     <td>
+                                        <?php echo e($user->limit); ?>
 
-                                        <?php if(isset($user->refLimit->limit)): ?>
-                                            <?php echo e($user->refLimit->limit); ?>
-
-                                        <?php else: ?>
-                                            Not Set
-                                        <?php endif; ?>
                                     </td>
                                     <td>
-                                        <?php if(isset($user->refLimit->year_month)): ?>
-                                            <?php echo e(\Carbon\Carbon::parse($user->refLimit->year_month)->format('F')); ?>
+                                        <?php echo e(\Carbon\Carbon::parse($user->year_month)->format('F')); ?>
 
-                                        <?php else: ?>
-                                            Not Set
-                                        <?php endif; ?>
-                                        
                                     </td>
                                     <td>
                                         <button class="btn btn-outline--primary btn-sm planBtn"
-                                                data-id="<?php echo e($user->id); ?>" data-act="Edit">
+                                                data-id="<?php echo e($user->user->id); ?>" data-act="Edit">
                                             <i class="la la-pencil"></i> <?php echo app('translator')->get('Set Limit'); ?>
                                         </button>
                                     </td>
@@ -76,7 +68,7 @@
                             <i class="las la-times"></i>
                         </button>
                     </div>
-                    <form action="<?php echo e(route('admin.refer.store')); ?>" method="POST">
+                    <form action="<?php echo e(route('admin.refer.update')); ?>" method="POST">
                         <?php echo csrf_field(); ?>
                         <input type="text" id="modalUserId" name="userId" hidden>
                         <div class="modal-body">
@@ -85,7 +77,6 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="limit" placeholder="<?php echo app('translator')->get('limit'); ?>"
                                            required>
-                                    
                                 </div>
                             </div>
                             <div class="form-group">
@@ -114,9 +105,25 @@
             $('.planBtn').on('click', function () {
                 var modal = $('#planModal');
                 // console.log($(this).data('id'));
+                var userId = $(this).data('id');
                 $('#modalUserId').val($(this).data('id'));
                 if ($(this).data('id') == 0) {
                     modal.find('form')[0].reset();
+                }else {
+                    $.ajax({
+                        url: '<?php echo e(route('get.user.data')); ?>', // Replace with the actual URL to fetch user data
+                        method: 'GET',
+                        data: { userId: userId },
+                        success: function (data) {
+                            console.log(data);
+                            // Populate the input fields with data from the server response
+                            modal.find('input[name="limit"]').val(data.limit);
+                            modal.find('input[name="year_month"]').val(data.year_month);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
                 }
                 modal.modal('show');
             });

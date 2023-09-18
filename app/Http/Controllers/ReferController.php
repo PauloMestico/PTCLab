@@ -34,4 +34,26 @@ class ReferController extends Controller
             return back()->withNotify($notify);
         }
     }
+
+    public function getUserData(Request $request)
+    {
+        $userId = $request->input('userId');
+//        dd($request->all());
+        // Replace 'User' with your actual Eloquent model for user data
+        $userData = ReferralSet::where('user_id', $userId)->first();
+
+        if (!$userData) {
+            // User not found, you can return an appropriate response or error message
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Assuming 'limit' and 'year_month' are columns in your 'users' table
+        $responseData = [
+            'limit' => $userData->limit,
+            'year_month' => date('Y-m-d', strtotime($userData->year_month)),
+        ];
+
+        return response()->json($responseData);
+    }
+
 }
