@@ -10,6 +10,7 @@ use App\Models\UserLogin;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -128,6 +129,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        DB::beginTransaction();
+
         $general = gs();
 
         $referBy = session()->get('reference');
@@ -157,6 +160,12 @@ class RegisterController extends Controller
         $user->ts = 0;
         $user->tv = 1;
         $user->save();
+
+        $user->refLimit()->create([
+            'user_id' => $user->id,
+            'limit' => 5,
+            'year_month' => date('Y-m-t')
+        ]);
 
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = $user->id;
@@ -195,7 +204,9 @@ class RegisterController extends Controller
         $userLogin->save();
 
 
+        DB::commit();
         return $user;
+
     }
 
     public function checkUser(Request $request){

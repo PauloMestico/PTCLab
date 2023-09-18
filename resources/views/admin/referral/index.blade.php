@@ -19,28 +19,18 @@
                             @foreach($users as $user)
                                 <tr>
                                     <td>
-                                        {{ $user->firstname." ".$user->lastname }}
+                                        {{ $user->user->firstname." ".$user->user->lastname }}
                                     </td>
 
                                     <td>
-{{--                                        {{ optional($user->refLimit)->limit }}--}}
-                                        @if(isset($user->refLimit->limit))
-                                            {{ $user->refLimit->limit }}
-                                        @else
-                                            Not Set
-                                        @endif
+                                        {{ $user->limit }}
                                     </td>
                                     <td>
-                                        @if(isset($user->refLimit->year_month))
-                                            {{ \Carbon\Carbon::parse($user->refLimit->year_month)->format('F') }}
-                                        @else
-                                            Not Set
-                                        @endif
-                                        {{--                                        {{ \Carbon\Carbon::parse(optional($user->refLimit)->year_month)->format('F') }}--}}
+                                        {{ \Carbon\Carbon::parse($user->year_month)->format('F') }}
                                     </td>
                                     <td>
                                         <button class="btn btn-outline--primary btn-sm planBtn"
-                                                data-id="{{ $user->id }}" data-act="Edit">
+                                                data-id="{{ $user->user->id }}" data-act="Edit">
                                             <i class="la la-pencil"></i> @lang('Set Limit')
                                         </button>
                                     </td>
@@ -74,7 +64,7 @@
                             <i class="las la-times"></i>
                         </button>
                     </div>
-                    <form action="{{ route('admin.refer.store') }}" method="POST">
+                    <form action="{{ route('admin.refer.update') }}" method="POST">
                         @csrf
                         <input type="text" id="modalUserId" name="userId" hidden>
                         <div class="modal-body">
@@ -83,7 +73,6 @@
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="limit" placeholder="@lang('limit')"
                                            required>
-                                    {{--                            <div class="input-group-text">@lang('Days')</div>--}}
                                 </div>
                             </div>
                             <div class="form-group">

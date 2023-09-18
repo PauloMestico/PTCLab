@@ -116,7 +116,7 @@ Route::middleware('admin')->group(function () {
 
     // Referral
     Route::get('/admin/referral-limit', [ReferController::class, 'index'])->name('refer.lists');
-    Route::post('/admin/referral/store', [ReferController::class, 'store'])->name('refer.store');
+    Route::post('/admin/referral/update/', [ReferController::class, 'update'])->name('refer.update');
 
     // WITHDRAW SYSTEM
     Route::name('withdraw.')->prefix('withdraw')->group(function () {
